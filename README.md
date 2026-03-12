@@ -1,5 +1,7 @@
 # DualMind - Voice Recording & AI Summary App
-
+<p align="center">
+  <img src="ezgif-193f234eb9d0ddb3.gif" width="250" alt="DualMind App Demo">
+</p>
 DualMind is a robust Android application designed to record real-world conversations, transcribe them in the background, and generate structured, actionable AI summaries. Built entirely with modern Android development practices (Jetpack Compose, MVVM, Room, and WorkManager), it handles complex audio interruptions seamlessly.
 
 ##  Features
