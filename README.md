@@ -55,7 +55,7 @@ For security reasons, the API key is not committed to version control. To build 
 5. **Sync and Run**: Click Sync Project with Gradle Files, then build and run the application on an emulator or physical device.
 
 ## Demo
-Link to the screen recording demonstrating the app flow, background recording, and AI summary generation will be placed here.
+Demo video link showing meetings, transcription, summary. [Video Link](https://github.com/anmolIC03/DualMind/blob/master/WhatsApp%20Video%202026-03-12%20at%201.47.19%20PM.mp4)
    
    
    
