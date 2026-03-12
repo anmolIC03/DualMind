@@ -1,5 +1,6 @@
 package com.example.dualmind.service
-
+import java.text.SimpleDateFormat
+import java.util.*
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -39,7 +40,6 @@ class RecordingService : Service() {
     private var sequenceNumber = 0
 
     private var currentAudioFile: File? = null
-    private var currentMeetingId = 1
 
     override fun onCreate() {
         super.onCreate()
@@ -56,6 +56,10 @@ class RecordingService : Service() {
         return START_STICKY
     }
 
+// In RecordingService — replace the currentMeetingId field and startRecordingSession()
+
+    private var currentMeetingId: Int = -1  // -1 until the meeting is inserted
+
     private fun startRecordingSession() {
         val focusResult = audioManager.requestAudioFocus(
             focusChangeListener,
@@ -67,6 +71,14 @@ class RecordingService : Service() {
             startForeground(1, createNotification("Recording...", "00:00"))
 
             serviceScope.launch {
+                // FIX 1: Create the meeting row first, use the real generated ID
+                val meetingEntity = com.example.dualmind.data.local.MeetingEntity(
+                    title = "Meeting ${SimpleDateFormat("MMM dd HH:mm", Locale.getDefault()).format(Date())}",
+                    isRecording = true,
+                    isProcessing = false
+                )
+                currentMeetingId = meetingDao.insertMeeting(meetingEntity).toInt()
+
                 while (isActive) {
                     currentAudioFile = AudioUtil.createAudioFile(
                         this@RecordingService,
@@ -85,14 +97,12 @@ class RecordingService : Service() {
                     activeRecorder?.release()
                     activeRecorder = null
 
-                    // FIX 1 + 3: capture values and null out currentAudioFile before async work
                     saveCurrentChunkAndTriggerWorker()
                     sequenceNumber++
                 }
             }
         }
     }
-
     private fun stopRecordingSession() {
         // Stop the coroutine loop first so it can't race with us
         serviceScope.cancel()
