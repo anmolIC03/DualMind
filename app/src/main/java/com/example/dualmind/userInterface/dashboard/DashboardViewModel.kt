@@ -15,8 +15,6 @@ class DashboardViewModel @Inject constructor(
     meetingDao: MeetingDao
 ) : ViewModel() {
 
-    // stateIn converts the Flow from Room into a StateFlow that Jetpack Compose can observe.
-    // It automatically pauses database queries when the app is in the background!
     val meetings: StateFlow<List<MeetingEntity>> = meetingDao.getAllMeetings()
         .stateIn(
             scope = viewModelScope,
